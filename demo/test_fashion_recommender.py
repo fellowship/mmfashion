@@ -52,8 +52,8 @@ def main():
     model = build_fashion_recommender(cfg.model)
     load_checkpoint(model, cfg.load_from, map_location='cpu')
     print('load checkpoint from: {}'.format(cfg.load_from))
-    if args.use_cuda:
-        model.cuda()
+    # if args.use_cuda:
+    #     model.cuda()
     model.eval()
 
     # prepare input data

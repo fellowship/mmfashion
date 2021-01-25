@@ -216,15 +216,20 @@ class PolyvoreOutfitDataset(Dataset):
         for i in range(n_items - 1):
             item1_id = item_ids[i]
             type1 = self.item2category[item1_id]
+            print("type1: " + str(type1))
             for j in range(i + 1, n_items):
                 item2_id = item_ids[j]
                 type2 = self.item2category[item2_id]
+                print("type2: " + str(type2))
                 condition = self.get_typespaces(type1, type2)
+                print("condition: " + str(condition))
                 embed1 = embeds[i][condition].unsqueeze(0)
+                print("embed1: " + str(embed1))
                 embed2 = embeds[j][condition].unsqueeze(0)
-                if use_cuda:
-                    embed1 = embed1.cuda()
-                    embed2 = embed2.cuda()
+                print("embed2: " + str(embed2))
+                # if use_cuda:
+                #     embed1 = embed1.cuda()
+                #     embed2 = embed2.cuda()
                 if metric is None:
                     outfit_score += torch.nn.functional.pairwise_distance(
                         embed1, embed2, 2)

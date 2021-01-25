@@ -25,8 +25,8 @@ def get_img_tensor(img_path, use_cuda, get_size=False):
     ])
     img_tensor = transform(img)
     img_tensor = torch.unsqueeze(img_tensor, 0)
-    if use_cuda:
-        img_tensor = img_tensor.cuda()
+    # if use_cuda:
+    #     img_tensor = img_tensor.cuda()
     if get_size:
         return img_tensor, original_w, original_w
     else:
