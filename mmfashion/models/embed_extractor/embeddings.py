@@ -18,7 +18,7 @@ def get_images(use_cuda):
         path = os.path.join(data_dir, f_name)
         try:
             tensor = get_img_tensor(path, use_cuda)
-            item_ids.append(path)
+            item_ids.append(f_name.split('%')[0])  # ignore the %0D suffix that gets attached with wget for each image
             img_tensors.append(tensor)
         except:
             print("Falied to get: ", path)
