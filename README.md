@@ -111,6 +111,17 @@ We appreciate all contributions to improve `MMFashion`. Please refer to [CONTRIB
 This project is released under the [Apache 2.0 license](LICENSE).
 
 
+## fellowship.ai use case
+```
+cd data/dockers_pics && ./data/dockers_pics/wget_links.sh
+python mmfashion/models/embed_extractor/embeddings.py
+
+# Should generate embeddings for the downloaded images as a binary file in 
+# $REPO_ROOT/data/image_embeddings.txt
+# Size is 19GB for 543 images
+# This can be loaded in turicreate after unpickling the binary dict  
+```
+
 ## Team
 
 * Xin Liu ([veralauee](https://github.com/veralauee))
