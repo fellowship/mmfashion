@@ -3,7 +3,7 @@ from mmcv import Config
 from mmcv.runner import load_checkpoint
 from mmfashion.models import build_fashion_recommender
 from mmfashion.utils import get_img_tensor
-
+from sklearn.decomposition import PCA
 
 def get_images(use_cuda):
     import os
@@ -34,7 +34,7 @@ def get_mmfashion_embeddings(model, img_tensors, image_ids):
     :param image_ids:  list of image urls for each tensor
     :return:
     """
-
+    pca = PCA(n_components=10)
     embeds = []
     embedding_dict = {}
     with torch.no_grad():
@@ -44,7 +44,9 @@ def get_mmfashion_embeddings(model, img_tensors, image_ids):
             embeds.append(embed.data.cpu())
     embeds = torch.cat(embeds)
     for idx, embed in enumerate(embeds):
-        embedding_dict[image_ids[idx]] = embed
+        pca.fit(embed)
+        embedding_dict[image_ids[idx]] = pca.singular_values_
+        print(pca.singular_values_)
     return embedding_dict
 
 
@@ -75,25 +77,13 @@ def get_embeddings_dict(products_df):
     return embeddings_dict
 
 
-# def download_images(products_df):
-#     import traceback
-#     for path in products_df['image_url_x'].unique():
-#         try:
-#             # ignore part after ? in url like -  https://lsco.scene7.com/is/image/lsco/526610647-front-pdp?$grid_desktop_full$
-#             path = path.split("?")[0]
-#             requests.get(path)
-#         except:
-#             traceback.print_exc()
-#             continue
-
-
 def main():
     import pandas as pd
     import os
     import pickle
     data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'data')
     input_path = os.path.join(data_dir, 'sample_data.csv')
-    output_path = os.path.join(data_dir, 'image_embeddings.txt')
+    output_path = os.path.join(data_dir, 'image_embeddings2.txt')
     products_df = pd.read_csv(input_path)
 
     # download_images(products_df)
